@@ -29,4 +29,14 @@ class Kele
 
     JSON.parse response.body
   end
+
+  def get_mentor_availability(mentor_id)
+    response = self.class.get(
+      "#{@base_url}/mentors/#{mentor_id}/student_availability",
+      headers: { "authorization" => @auth_token }
+    )
+
+    json_object = JSON.parse response.body
+    puts json_object  
+  end
 end

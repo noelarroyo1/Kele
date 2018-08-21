@@ -1,6 +1,7 @@
 require 'httparty'
 require 'pp'
 require 'json'
+require 'rest-client'
 require './lib/roadmap'
 
 class Kele
@@ -40,5 +41,12 @@ class Kele
 
     json_object = JSON.parse response.body
     puts json_object
+  end
+
+  def get_remaining_checkpoints(chain_id)
+    response = RestClient.get "https://private-anon-b394903368-blocapi.apiary-mock.com/api/v1/enrollment_chains/#{chain_id}/checkpoints_remaining_in_section",
+      headers: { "authorization" => @auth_token }
+
+    pp JSON.parse response.body
   end
 end

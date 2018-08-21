@@ -1,6 +1,7 @@
 require 'httparty'
 require 'pp'
 require 'json'
+require 'rest-client'
 require './lib/roadmap'
 
 class Kele
@@ -29,7 +30,7 @@ class Kele
       headers: { "authorization" => @auth_token }
     )
 
-    JSON.parse response.body
+    pp JSON.parse response.body
   end
 
   def get_mentor_availability(mentor_id)
@@ -40,5 +41,37 @@ class Kele
 
     json_object = JSON.parse response.body
     puts json_object
+  end
+
+  def get_messages(n = nil)
+
+    response = self.class.get(
+      "#{@base_url}/message_threads",
+      headers: { "authorization" => @auth_token }
+    )
+
+    if n.nil?
+      json_object = JSON.parse response.body
+      pp json_object
+    else
+      json_object = JSON.parse response.body
+      items = json_object["items"][n - 1]
+      pp items
+    end
+  end
+
+  def create_message
+
+    message = {
+      "sender": "noel.arroyo1@gmail.com",
+      "recipient_id": 2363254,
+      "subject": "Yo",
+      "stripped-text": "WAAAASSUUUUUUP?!"
+    }
+    
+    response = RestClient.post "#{@base_url}/messages",
+    message, headers: { "authorization" => @auth_token }
+
+    puts response
   end
 end

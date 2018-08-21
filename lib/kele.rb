@@ -60,15 +60,22 @@ class Kele
     end
   end
 
-  def create_message
+  def create_message(
+    sender = "noel.arroyo1@gmail.com",
+    recipient_id = 2363254,
+    token = nil,
+    subject = nil,
+    stripped_text = "What's up?"
+  )
 
     message = {
-      "sender": "noel.arroyo1@gmail.com",
-      "recipient_id": 2363254,
-      "subject": "Yo",
-      "stripped-text": "WAAAASSUUUUUUP?!"
+      "sender": sender,
+      "recipient_id": recipient_id,
+      "token": token,
+      "subject": subject,
+      "stripped-text": stripped_text,
     }
-    
+
     response = RestClient.post "#{@base_url}/messages",
     message, headers: { "authorization" => @auth_token }
 

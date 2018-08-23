@@ -44,28 +44,27 @@ class Kele
   end
 
   def get_messages(n = nil)
+    url = "#{@base_url}/message_threads/"
+
+    if !n.nil?
+      url = "#{@base_url}/message_threads/?page=#{n}"
+    end
 
     response = self.class.get(
-      "#{@base_url}/message_threads",
+      url,
       headers: { "authorization" => @auth_token }
     )
 
-    if n.nil?
-      json_object = JSON.parse response.body
-      pp json_object
-    else
-      json_object = JSON.parse response.body
-      items = json_object["items"][n - 1]
-      pp items
-    end
+    json_object = JSON.parse response.body
+    pp json_object
   end
 
   def create_message(
-    sender = "noel.arroyo1@gmail.com",
-    recipient_id = 2363254,
+    sender,
+    recipient_id,
     token = nil,
     subject = nil,
-    stripped_text = "What's up?"
+    stripped_text
   )
 
     message = {
@@ -73,7 +72,7 @@ class Kele
       "recipient_id": recipient_id,
       "token": token,
       "subject": subject,
-      "stripped-text": stripped_text,
+      "stripped-text": stripped_text
     }
 
     response = RestClient.post "#{@base_url}/messages",

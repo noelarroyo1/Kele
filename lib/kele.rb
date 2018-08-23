@@ -44,8 +44,9 @@ class Kele
   end
 
   def get_remaining_checkpoints(chain_id)
-    response = RestClient.get "https://private-anon-b394903368-blocapi.apiary-mock.com/api/v1/enrollment_chains/#{chain_id}/checkpoints_remaining_in_section",
+    response = self.class.get("#{@base_url}/enrollment_chains/#{chain_id}/checkpoints_remaining_in_section",
       headers: { "authorization" => @auth_token }
+    )
 
     pp JSON.parse response.body
   end
